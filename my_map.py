@@ -123,9 +123,19 @@ class MyMap(MutableMapping):
         """
         Returns the entry at key, i.e. del d[key]
         """
-        # TO DO ...
-        ...
-        raise KeyError(f"Key '{key}' not found in map.")
+        bucket_id = h(key, len(self._array))
+
+        key_index = self._in_array(self._array[bucket_id], key)
+
+        if key_index is None:
+            raise KeyError(f"Key '{key}' not found in map.")
+        
+        return_value = self._array[bucket_id][key_index].value
+        
+        del self._array[bucket_id][key_index]
+
+        return return_value
+        
 
     def _resize(self):
         # TO DO ...
@@ -149,3 +159,10 @@ print(mp)
 print(len(mp))
 
 print(mp["b"])
+print(mp)
+
+del mp["a"]
+del mp["c"]
+del mp["b"]
+del mp["b"]
+print(mp)
