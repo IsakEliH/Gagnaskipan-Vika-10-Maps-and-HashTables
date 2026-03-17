@@ -109,8 +109,15 @@ class MyMap(MutableMapping):
         Returns the value at key entry, i.e. value = d[key].
         Raises KeyError if the key is not found.
         """
-        # TO DO ...
-        raise KeyError(f"Key '{key}' not found in map.")
+        bucket_id = h(key, len(self._array))
+
+        key_index = self._in_array(self._array[bucket_id], key)
+
+        if key_index is None:
+            raise KeyError(f"Key '{key}' not found in map.")
+        
+        return self._array[bucket_id][key_index].value
+
 
     def __delitem__(self, key):
         """
@@ -133,10 +140,12 @@ mp["a"] = 1
 print(mp)
 print(len(mp))
 
-mp["a"] = 2
+mp["b"] = 2
 print(mp)
 print(len(mp))
 
-mp["a"] = 3
+mp["c"] = 3
 print(mp)
 print(len(mp))
+
+print(mp["b"])
