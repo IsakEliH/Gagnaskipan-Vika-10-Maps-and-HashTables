@@ -115,9 +115,8 @@ class MyMap(MutableMapping):
 
         if key_index is None:
             raise KeyError(f"Key '{key}' not found in map.")
-        
-        return self._array[bucket_id][key_index].value
 
+        return self._array[bucket_id][key_index].value
 
     def __delitem__(self, key):
         """
@@ -129,40 +128,13 @@ class MyMap(MutableMapping):
 
         if key_index is None:
             raise KeyError(f"Key '{key}' not found in map.")
-        
+
         return_value = self._array[bucket_id][key_index].value
-        
+
         del self._array[bucket_id][key_index]
 
         return return_value
-        
 
     def _resize(self):
         # TO DO ...
         ...
-
-
-mp = MyMap(2)
-print(mp)
-print(len(mp))
-
-mp["a"] = 1
-print(mp)
-print(len(mp))
-
-mp["b"] = 2
-print(mp)
-print(len(mp))
-
-mp["c"] = 3
-print(mp)
-print(len(mp))
-
-print(mp["b"])
-print(mp)
-
-del mp["a"]
-del mp["c"]
-del mp["b"]
-del mp["b"]
-print(mp)
