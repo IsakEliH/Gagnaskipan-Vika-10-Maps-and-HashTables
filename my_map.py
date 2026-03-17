@@ -136,4 +136,13 @@ class MyMap(MutableMapping):
         return return_value
 
     def _resize(self):
-        ...        
+
+        new_array = [[] for _ in range(len(self._array) * 2)]
+
+        for item in self:
+            bucket_id = h(item, len(new_array))
+
+            new_array[bucket_id].append(item)
+
+        self._array = new_array
+        self._len = len(self._array) * 2
