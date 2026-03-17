@@ -145,4 +145,3 @@ class MyMap(MutableMapping):
             new_array[bucket_id].append(item)
 
         self._array = new_array
-        self._len = len(self._array) * 2
