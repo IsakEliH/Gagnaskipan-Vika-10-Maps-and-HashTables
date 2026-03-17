@@ -60,8 +60,8 @@ test_basic()
 
 # Once you got the basic test working then uncomment the test_map calls below.
 print("====> Test My dict")
-# test_map(True)
+test_map(True)
 print("====> Test My dict with resizing based on load factor")
-# test_map(True, 5.0)
+test_map(True, 5.0)
 print("====> Test Python's dict")
-# test_map(False)
+test_map(False)
