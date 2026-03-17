@@ -12,29 +12,32 @@ def polynomial_rolling_hash(s):
         hash_code = (hash_code * 31) + ord(c)  # ord() returns unicode-value of c
     return hash_code
 
+
 def h1(s: str) -> int:
     """Hash code generation."""
     # return 0
     # return len(s)
     return polynomial_rolling_hash(s)
 
+
 def h2(n: int, max_n: int) -> int:
     """Compresses hash-code into range [0, max_n-1]."""
     assert max_n > 0, "Invalid max_n"
     return n % max_n
 
+
 def h(s: str, max_n: int) -> int:
     """Hash function returning a hash value for input string."""
     return h2(h1(s), max_n)
 
-class MyMap(MutableMapping):
 
+class MyMap(MutableMapping):
     # Define a named tuple class named 'Item' with fields 'key' and 'value'.
     # This represents a (key, value) pair in our map; create new as: self.Item(key, value)
-    Item = namedtuple('Item', ['key', 'value'])
+    Item = namedtuple("Item", ["key", "value"])
 
     def _in_array(self, bucket: list[Item], key: str) -> int | None:
-        """ If item with given key is in the array, return its index, otherwise return None. """
+        """If item with given key is in the array, return its index, otherwise return None."""
         for i in range(len(bucket)):
             if bucket[i].key == key:
                 return i
@@ -49,9 +52,9 @@ class MyMap(MutableMapping):
             bucket_sizes.append(len(bucket))
         return str(bucket_sizes)
 
-    def __init__(self, size_arr: int = 1, max_load_factor = None):
+    def __init__(self, size_arr: int = 1, max_load_factor=None):
         assert size_arr > 0, "Invalid array size"
-        self._max_load_factor = max_load_factor # Do automatically resize when load-factor exceeds max_load_factor
+        self._max_load_factor = max_load_factor  # Do automatically resize when load-factor exceeds max_load_factor
         self._array = [[] for _ in range(size_arr)]
         self._len = 0
 
@@ -67,8 +70,8 @@ class MyMap(MutableMapping):
         """
         items = []
         for item in self:
-            items.append(f'{item[0]}: {item[1]}')
-        return '{' + ', '.join(items) + '}'
+            items.append(f"{item[0]}: {item[1]}")
+        return "{" + ", ".join(items) + "}"
 
     def __len__(self):
         """
@@ -82,9 +85,24 @@ class MyMap(MutableMapping):
         """
         Sets (updates if exists, otherwise adds) the value at key entry, i.e. d[key] = value
         """
-        if self._max_load_factor is not None and 0.0 < self._max_load_factor <= self._load_factor():
+        if (
+            self._max_load_factor is not None
+            and 0.0 < self._max_load_factor <= self._load_factor()
+        ):
             self._resize()
-        # TO DO ...
+
+        bucket_id = h(key, len(self._array))
+
+        key_index = self._in_array(self._array[bucket_id], key)
+
+        x = self.Item(key, value)
+
+        if key_index is not None:
+            self._array[bucket_id][key_index] = x
+
+        else:
+            self._array[bucket_id].append(x)
+            self._len += 1
 
     def __getitem__(self, key):
         """
@@ -105,3 +123,20 @@ class MyMap(MutableMapping):
     def _resize(self):
         # TO DO ...
         ...
+
+
+mp = MyMap(2)
+print(mp)
+print(len(mp))
+
+mp["a"] = 1
+print(mp)
+print(len(mp))
+
+mp["a"] = 2
+print(mp)
+print(len(mp))
+
+mp["a"] = 3
+print(mp)
+print(len(mp))
